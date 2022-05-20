@@ -1,0 +1,8 @@
+{{
+        url: "https://www.youtube.com/watch?v=G5cH2QYu9aA",
+        description: "Learn how to make drill beats, use slides in 808 and the unusual hi-hats, the differents melodies to follow the vibe!"
+},
+{
+        
+}
+}
