@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get("/content:daw", async(req,res)=>{
+app.get("/content/:daw", async(req,res)=>{
     const daw = req.params.daw
     const {authorization} = req.headers
     const token = authorization.replace("Bearer", "").trim();
@@ -20,15 +20,14 @@ app.get("/content:daw", async(req,res)=>{
         const userInfo = await db.collection("users").findOne({email:user.email});
         const userLevel = userInfo[daw];
         const content = await db.collection("content").findOne({name:daw});
-        const contentLevel = content[userLevel]
-        res.send(contentLevel);
+        const contentLevel = content[`nivel${userLevel}`]
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
     }
 })
 
-app.post("/level:daw", async(req,res)=>{
+app.post("/level/:daw", async(req,res)=>{
     const daw = req.params.daw
     const newLevel = req.body.level
     const {authorization} = req.headers
@@ -51,7 +50,7 @@ app.post("/login", async (req,res) => {
         const token = uuid()
         try{
                 const users = db.collection("users")
-                const user = await user.findOne({email})
+                const user = await users.findOne({email})
                 const sessions = db.collection("sessions")
                 if(user){
                         if (user && bcrypt.compareSync(password, user.encryptedPassword)){              
@@ -63,11 +62,12 @@ app.post("/login", async (req,res) => {
                 }
 
                 const encryptedPassword = bcrypt.hashSync(password, 10);
-                await users.insertOne({ name, email, encryptedPassword})
-                await sessions.insertOne({ email, token })
+                await users.insertOne({ name, email, encryptedPassword, flStudio: "1", abletonLive: "1", proTools: "1"})
+                await sessions.insertOne({ email, token})
                 res.send(token)
         }catch(error){
-                res.send(error)
+                console.log(error)
+                res.send(500);
         }
 })
 
