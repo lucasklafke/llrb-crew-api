@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/content/:daw", async(req,res)=>{
-    const daw = req.params.daw
+    const {daw} = req.params
     const {authorization} = req.headers
     const token = authorization.replace("Bearer", "").trim();
     try{
@@ -68,7 +68,7 @@ app.post("/login", async (req,res) => {
                 res.send(token)
         }catch(error){
                 console.log(error)
-                res.send(500);
+                res.sendStatus(500);
         }
 })
 
