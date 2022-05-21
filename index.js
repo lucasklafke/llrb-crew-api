@@ -21,6 +21,7 @@ app.get("/content/:daw", async(req,res)=>{
         const userLevel = userInfo[daw];
         const content = await db.collection("content").findOne({name:daw});
         const contentLevel = content[`nivel${userLevel}`]
+        res.send(contentLevel)
     } catch (e) {
         console.log(e);
         res.sendStatus(500);
