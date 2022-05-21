@@ -13,6 +13,7 @@ app.use(cors());
 app.get("/content/:daw", async(req,res)=>{
     const {daw} = req.params
     const {authorization} = req.headers
+    if(!authorization){ return res.sendStatus(422)}
     const token = authorization.replace("Bearer", "").trim();
     try{
         const user = await db.collection("sessions").findOne({token:token});
